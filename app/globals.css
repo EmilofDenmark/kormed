@@ -1,0 +1,60 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --color-background: #f7f8f6;
+  --color-surface: #ffffff;
+  --color-brand-dark: #17324d;
+  --color-brand-green: #2f7d6d;
+  --color-brand-neutral: #ede9e0;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  background-color: var(--color-background);
+  color: var(--color-brand-dark);
+}
+
+/* Visible focus rings everywhere for keyboard users (WCAG 2.2 AA). */
+:focus-visible {
+  outline: 2px solid var(--color-brand-green);
+  outline-offset: 2px;
+}
+
+/* Respect reduced-motion preferences; the app already avoids decorative
+   animation, this just guards any transitions that slip in. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.maplibregl-map {
+  border-radius: 1rem;
+  overflow: hidden;
+}
+
+.ride-map-pin {
+  width: 16px;
+  height: 16px;
+  border-radius: 999px;
+  background-color: #2f7d6d;
+  border: 2px solid #ffffff;
+  box-shadow: 0 1px 3px rgba(23, 50, 77, 0.35);
+  cursor: pointer;
+  padding: 0;
+}
+
+.ride-map-pin:hover,
+.ride-map-pin:focus-visible {
+  background-color: #17324d;
+}
