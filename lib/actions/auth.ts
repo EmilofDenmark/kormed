@@ -104,6 +104,7 @@ export async function signUp(_prev: ActionResult, formData: FormData): Promise<A
   })
 
   if (error) {
+    console.error('signup_failed', error.message)
     return { success: false, error: toUserMessage(error.message) }
   }
 
@@ -125,6 +126,7 @@ export async function logIn(_prev: ActionResult, formData: FormData): Promise<Ac
   const supabase = await createClient()
   const { error } = await supabase.auth.signInWithPassword(parsed.data)
   if (error) {
+    console.error('auth_action_failed', error.message)
     return { success: false, error: toUserMessage(error.message) }
   }
 
@@ -155,6 +157,7 @@ export async function requestPhoneOtp(_prev: ActionResult, formData: FormData): 
 
   const { error } = await supabase.auth.updateUser({ phone: parsed.data.phone })
   if (error) {
+    console.error('auth_action_failed', error.message)
     return { success: false, error: toUserMessage(error.message) }
   }
   return { success: true }
@@ -173,6 +176,7 @@ export async function verifyPhoneOtp(_prev: ActionResult, formData: FormData): P
     type: 'phone_change',
   })
   if (error) {
+    console.error('auth_action_failed', error.message)
     return { success: false, error: toUserMessage(error.message) }
   }
 
@@ -204,6 +208,7 @@ export async function setNewPassword(_prev: ActionResult, formData: FormData): P
   const supabase = await createClient()
   const { error } = await supabase.auth.updateUser({ password })
   if (error) {
+    console.error('auth_action_failed', error.message)
     return { success: false, error: toUserMessage(error.message) }
   }
 
