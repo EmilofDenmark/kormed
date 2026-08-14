@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { signUp, type ActionResult } from '@/lib/actions/auth'
 import { Label, Input, FieldError, HelpText } from '@/components/ui/Field'
 import { Button } from '@/components/ui/Button'
+import { DateOfBirthField } from './DateOfBirthField'
 
 const initialState: ActionResult = { success: false }
 
@@ -40,12 +41,7 @@ export function SignupForm() {
         <HelpText>Bruges kun til verifikation og vises aldrig offentligt.</HelpText>
       </div>
 
-      <div>
-        <Label htmlFor="dateOfBirth">Fødselsdato</Label>
-        <Input id="dateOfBirth" name="dateOfBirth" type="date" required />
-        <FieldError>{state.fieldErrors?.dateOfBirth}</FieldError>
-        <HelpText>Du skal være mindst 18 år for at oprette en konto.</HelpText>
-      </div>
+      <DateOfBirthField error={state.fieldErrors?.dateOfBirth} />
 
       <div>
         <Label htmlFor="password">Adgangskode</Label>
