@@ -1,11 +1,19 @@
 -- Core triggers: new-user provisioning, age gate, verification flag sync,
 -- updated_at maintenance, rating aggregation.
 
+-- Uses gen_random_uuid() (built into Postgres core since v13, no extension
+-- needed) rather than pgcrypto's gen_random_bytes(). handle_new_user() below
+-- runs as SECURITY DEFINER with search_path pinned to just "public" (a
+-- deliberate hardening against search_path-hijacking attacks), and on
+-- Supabase, extension functions like pgcrypto's live in a separate
+-- "extensions" schema — unqualified calls to them fail with "function ...
+-- does not exist" under a locked-down search_path. Avoiding the extension
+-- entirely sidesteps that class of bug rather than schema-qualifying it.
 create or replace function public.generate_public_id() returns text
 language sql
 volatile
 as $$
-  select lower(substr(encode(gen_random_bytes(6), 'base64'), 1, 8))
+  select substr(replace(gen_random_uuid()::text, '-', ''), 1, 8)
 $$;
 
 -- Runs after Supabase Auth creates a row in auth.users. Expects first_name,
