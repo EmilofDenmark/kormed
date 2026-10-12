@@ -17,11 +17,11 @@ export default function ContactPage() {
           </div>
           <div>
             <dt className="text-ink-500">CVR</dt>
-            <dd className="text-brand-dark">[CVR]</dd>
+            <dd className="text-brand-dark">{brand.companyCvr}</dd>
           </div>
           <div>
             <dt className="text-ink-500">Adresse</dt>
-            <dd className="text-brand-dark">[ADDRESS]</dd>
+            <dd className="text-brand-dark">{brand.companyAddress}</dd>
           </div>
           <div>
             <dt className="text-ink-500">E-mail</dt>
@@ -29,11 +29,6 @@ export default function ContactPage() {
           </div>
         </dl>
       </Card>
-
-      <p className="text-xs text-ink-500">
-        CVR og adresse er placeholder-oplysninger og skal udfyldes med selskabets reelle oplysninger, før siden går i
-        produktion — se README og /admin/juridisk.
-      </p>
     </div>
   )
 }
