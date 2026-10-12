@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
-import { getCurrentProfile } from '@/lib/session'
+import { getCurrentProfile, isVerified } from '@/lib/session'
+import { PhoneCoordinationNotice } from '@/components/PhoneCoordinationNotice'
 import { enrichRides } from '@/lib/rides/enrich'
 import { Card } from '@/components/ui/Card'
 import { Badge } from '@/components/ui/Badge'
@@ -140,13 +141,15 @@ export default async function RideDetailPage({ params }: { params: { id: string 
               <LinkButton href={`/log-ind?next=/tur/${ride.id}`} fullWidth>Log ind for at anmode om plads</LinkButton>
             ) : !isBookable ? (
               <p className="rounded-xl bg-brand-neutral p-4 text-center text-sm text-brand-dark">Denne tur kan ikke længere bookes.</p>
-            ) : !profile.email_verified || !profile.phone_verified ? (
+            ) : !isVerified(profile) ? (
               <div className="space-y-2 text-center">
-                <p className="text-sm text-ink-700">Bekræft din e-mail og dit telefonnummer for at anmode om en plads.</p>
-                <LinkButton href="/bekraeft-telefon" fullWidth variant="outline">Bekræft nu</LinkButton>
+                <p className="text-sm text-ink-700">Bekræft din e-mail for at anmode om en plads. Tjek din indbakke.</p>
               </div>
             ) : (
-              <RequestSeatForm rideId={ride.id} maxSeats={ride.available_seats} />
+              <div className="space-y-3">
+                <RequestSeatForm rideId={ride.id} maxSeats={ride.available_seats} />
+                <PhoneCoordinationNotice />
+              </div>
             )}
           </Card>
         </div>

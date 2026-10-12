@@ -9,7 +9,7 @@ import { createClient } from '@/lib/supabase/server'
 export async function GET(request: NextRequest) {
   const { searchParams, origin } = new URL(request.url)
   const code = searchParams.get('code')
-  const next = searchParams.get('next') ?? '/bekraeft-telefon'
+  const next = searchParams.get('next') ?? '/profil'
 
   if (code) {
     const supabase = await createClient()

@@ -5,6 +5,7 @@ import { requireProfile } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { markConversationRead } from '@/lib/actions/chat'
 import { ChatThread } from '@/components/chat/ChatThread'
+import { PhoneCoordinationNotice } from '@/components/PhoneCoordinationNotice'
 
 export const metadata: Metadata = { title: 'Samtale', robots: { index: false } }
 
@@ -39,6 +40,7 @@ export default async function ConversationPage({ params }: { params: { conversat
       <p className="mb-4 text-xs text-ink-500">
         Del aldrig kodeord, kortoplysninger eller andre følsomme oplysninger her. I aftaler selv præcist mødested.
       </p>
+      <PhoneCoordinationNotice className="mb-4" />
       <ChatThread conversationId={conversation.id} currentUserId={profile.id} initialMessages={messages ?? []} />
     </div>
   )

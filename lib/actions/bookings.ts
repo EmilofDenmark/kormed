@@ -14,7 +14,7 @@ function toUserMessage(message: string): string {
   if (message.includes('ride_not_bookable')) return 'Denne tur kan ikke længere bookes.'
   if (message.includes('cannot_book_own_ride')) return 'Du kan ikke booke din egen tur.'
   if (message.includes('not_enough_seats')) return 'Der er ikke nok ledige pladser.'
-  if (message.includes('account_not_verified')) return 'Du skal bekræfte din e-mail og dit telefonnummer, før du kan booke.'
+  if (message.includes('account_not_verified')) return 'Du skal bekræfte din e-mail, før du kan booke.'
   if (message.includes('booking_not_pending')) return 'Denne anmodning er allerede besvaret.'
   if (message.includes('booking_not_cancellable')) return 'Denne booking kan ikke længere aflyses.'
   if (message.includes('booking_not_completable')) return 'Denne booking kan ikke markeres som gennemført endnu.'

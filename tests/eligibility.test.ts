@@ -1,15 +1,17 @@
 import { describe, it, expect } from 'vitest'
-import { isVerified, canPublishRide, canRequestBooking, hasAdminAccess } from '@/lib/eligibility'
+import { isVerified, REQUIRE_PHONE_VERIFICATION, canPublishRide, canRequestBooking, hasAdminAccess } from '@/lib/eligibility'
 
 // Spec §36 rule 2: only verified users can create rides.
 describe('publishing eligibility', () => {
   const verified = { email_verified: true, phone_verified: true }
-  const unverified = { email_verified: true, phone_verified: false }
+  const unverified = { email_verified: false, phone_verified: false }
 
-  it('requires both email and phone verification', () => {
+  it('requires a verified email (phone verification is optional while SMS is switched off)', () => {
+    expect(REQUIRE_PHONE_VERIFICATION).toBe(false)
     expect(isVerified(verified)).toBe(true)
+    expect(isVerified({ email_verified: true, phone_verified: false })).toBe(true)
     expect(isVerified(unverified)).toBe(false)
-    expect(isVerified({ email_verified: false, phone_verified: false })).toBe(false)
+    expect(isVerified({ email_verified: false, phone_verified: true })).toBe(false)
   })
 
   it('blocks ride publishing without a verified account, even with the declaration accepted', () => {

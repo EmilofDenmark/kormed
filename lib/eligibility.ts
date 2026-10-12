@@ -12,8 +12,17 @@ export interface VerificationStatus {
   phone_verified: boolean
 }
 
+/**
+ * Telefonbekræftelse (SMS) er slået fra indtil videre, fordi der ikke er
+ * tilsluttet en SMS-udbyder. Sæt til `true` igen, når SMS er sat op i
+ * Supabase (Authentication → Providers → Phone) — og husk også at køre
+ * migrationen, der kræver telefon i `request_booking` (se
+ * supabase/migrations/20260101000015_phone_verification_optional.sql).
+ */
+export const REQUIRE_PHONE_VERIFICATION = false
+
 export function isVerified(profile: VerificationStatus): boolean {
-  return profile.email_verified && profile.phone_verified
+  return profile.email_verified && (!REQUIRE_PHONE_VERIFICATION || profile.phone_verified)
 }
 
 export function canPublishRide(profile: VerificationStatus, hasAcceptedDriverDeclaration: boolean): boolean {

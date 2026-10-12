@@ -11,7 +11,7 @@ export default function ConfirmEmailPage() {
         <h1 className="mb-2 text-xl font-semibold text-brand-dark">Tjek din indbakke</h1>
         <p className="mb-6 text-ink-500">
           Vi har sendt dig en e-mail med et bekræftelseslink. Klik på linket for at bekræfte din konto — herefter kan
-          du logge ind og bekræfte dit telefonnummer.
+          du logge ind.
         </p>
         <LinkButton href="/log-ind" variant="outline">Til login</LinkButton>
       </Card>
