@@ -357,7 +357,7 @@ export interface Database {
           Partial<
             Pick<
               Database['public']['Tables']['support_contributions']['Row'],
-              'user_id' | 'currency' | 'provider_payment_id' | 'status'
+              'id' | 'user_id' | 'currency' | 'provider_payment_id' | 'status'
             >
           >
         Update: Partial<
