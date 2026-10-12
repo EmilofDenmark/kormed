@@ -14,6 +14,8 @@ export const brand = {
   url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
   supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'emil@viniglasset.dk',
   companyName: 'Dosage',
+  companyCvr: '30144783',
+  companyAddress: 'Andrei Sakharovs Vej 25, 3. 3., 2450 København SV',
   locale: 'da-DK',
   currency: 'DKK',
 } as const
