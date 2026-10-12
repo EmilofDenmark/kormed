@@ -1,5 +1,5 @@
 import type { Metadata } from 'next'
-import { requireProfile } from '@/lib/session'
+import { requireProfile, isVerified } from '@/lib/session'
 import { createClient } from '@/lib/supabase/server'
 import { getAppSettings } from '@/lib/settings'
 import { DRIVER_DECLARATION_VERSION } from '@/lib/config/legal'
@@ -12,15 +12,15 @@ export const metadata: Metadata = { title: 'Tilbyd et lift' }
 export default async function OfferRidePage() {
   const profile = await requireProfile('/log-ind?next=/tilbyd-lift')
 
-  if (!profile.email_verified || !profile.phone_verified) {
+  if (!isVerified(profile)) {
     return (
       <div className="mx-auto max-w-md px-4 py-16 text-center sm:px-6">
         <Card>
-          <h1 className="mb-2 text-xl font-semibold text-brand-dark">Bekræft din konto først</h1>
+          <h1 className="mb-2 text-xl font-semibold text-brand-dark">Bekræft din e-mail først</h1>
           <p className="mb-6 text-ink-500">
-            Du skal have en bekræftet e-mail og et bekræftet telefonnummer, før du kan tilbyde et lift.
+            Du skal have en bekræftet e-mail, før du kan tilbyde et lift. Tjek din indbakke for bekræftelseslinket.
           </p>
-          <LinkButton href="/bekraeft-telefon">Bekræft nu</LinkButton>
+          <LinkButton href="/profil">Til min profil</LinkButton>
         </Card>
       </div>
     )

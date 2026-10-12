@@ -1,4 +1,3 @@
-import Link from 'next/link'
 import { Badge } from '@/components/ui/Badge'
 import { CheckIcon } from '@/components/ui/icons'
 
@@ -13,15 +12,11 @@ export function VerificationStatus({ emailVerified, phoneVerified }: { emailVeri
         {emailVerified && <CheckIcon width={14} height={14} />}
         E-mail {emailVerified ? 'verificeret' : 'ikke verificeret'}
       </Badge>
-      {phoneVerified ? (
+      {phoneVerified && (
         <Badge tone="green">
           <CheckIcon width={14} height={14} />
           Telefon verificeret
         </Badge>
-      ) : (
-        <Link href="/bekraeft-telefon">
-          <Badge tone="warning">Telefon ikke verificeret — bekræft nu</Badge>
-        </Link>
       )}
     </div>
   )

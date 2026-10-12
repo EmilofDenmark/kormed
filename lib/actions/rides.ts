@@ -88,7 +88,7 @@ export async function createRide(_prev: ActionResult, formData: FormData): Promi
     return {
       success: false,
       error: !profile || !isVerified(profile)
-        ? 'Du skal have en bekræftet e-mail og et bekræftet telefonnummer for at oprette en tur.'
+        ? 'Du skal have en bekræftet e-mail for at oprette en tur.'
         : 'Du skal bekræfte chaufførerklæringen, før du kan oprette en tur.',
     }
   }
