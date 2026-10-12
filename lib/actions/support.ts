@@ -40,22 +40,25 @@ export async function startSupportContribution(_prev: ActionResult, formData: Fo
     data: { user },
   } = await supabase.auth.getUser()
 
-  const { data: contribution, error } = await supabase
-    .from('support_contributions')
-    .insert({
-      user_id: user?.id ?? null,
-      amount: parsed.data.amountDkk,
-      payment_provider: settings.support.paymentProvider,
-    })
-    .select('id')
-    .single()
+  // Vi vælger id'et selv og beder ikke databasen om at returnere rækken
+  // (.select()): RLS tillader kun, at man læser sine egne bidrag, og et
+  // anonymt bidrag (user_id = null) har ingen ejer. Med .select() ville
+  // indsættelsen lykkes, men rækken kunne ikke læses tilbage, og gæster
+  // ville få en fejl.
+  const contributionId = crypto.randomUUID()
+  const { error } = await supabase.from('support_contributions').insert({
+    id: contributionId,
+    user_id: user?.id ?? null,
+    amount: parsed.data.amountDkk,
+    payment_provider: settings.support.paymentProvider,
+  })
 
-  if (error || !contribution) {
+  if (error) {
     return { success: false, error: 'Kunne ikke starte dit bidrag. Prøv igen.' }
   }
 
   const provider = selectSupportProvider(settings.support.paymentProvider)
-  const result = provider.startContribution({ amountDkk: parsed.data.amountDkk, contributionId: contribution.id })
+  const result = provider.startContribution({ amountDkk: parsed.data.amountDkk, contributionId })
 
   if (!result.redirectUrl) {
     return {
