@@ -12,7 +12,8 @@ export const brand = {
   supportingText: 'Find et lift hos en, der allerede skal afsted – eller tilbyd en ledig plads i din bil.',
   socialHandle: process.env.NEXT_PUBLIC_SOCIAL_HANDLE || '@KørMed',
   url: process.env.NEXT_PUBLIC_APP_URL || 'http://localhost:3000',
-  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'kontakt@example.dk',
+  supportEmail: process.env.NEXT_PUBLIC_SUPPORT_EMAIL || 'emil@viniglasset.dk',
+  companyName: 'Dosage',
   locale: 'da-DK',
   currency: 'DKK',
 } as const
