@@ -1,4 +1,5 @@
 import 'server-only'
+import { brand } from '@/lib/config/brand'
 
 /**
  * Transactional email abstraction (spec §27: essential notifications only,
@@ -36,6 +37,8 @@ const resendProvider: EmailProvider = {
       body: JSON.stringify({
         from: process.env.EMAIL_FROM || 'KørMed <ingen-svar@example.dk>',
         to: input.to,
+        // Svar på mails fra "noreply@" lander hos administratoren i stedet for ingen steder.
+        reply_to: process.env.EMAIL_REPLY_TO || brand.supportEmail,
         subject: input.subject,
         text: input.text,
         html: input.html,
