@@ -31,6 +31,9 @@ function toUserMessage(message: string): string {
     return 'Der findes allerede en konto med denne e-mailadresse.'
   }
   if (message.includes('Invalid login credentials')) return 'Forkert e-mail eller adgangskode.'
+  if (message.toLowerCase().includes('banned')) {
+    return `Din konto er udelukket fra ${brand.name}. Hvis du mener, det er en fejl, kan du skrive til ${brand.supportEmail}.`
+  }
   if (message.includes('Email not confirmed')) return 'Bekræft venligst din e-mailadresse først — tjek din indbakke.'
   if (message.includes('Phone') && message.includes('invalid')) return 'Ugyldigt telefonnummer.'
   if (message.includes('token') && message.includes('invalid')) return 'Koden er forkert eller udløbet.'
