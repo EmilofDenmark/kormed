@@ -23,6 +23,7 @@ async function text(path) {
 const publicPages = [
   '/', '/find-lift', '/tilmeld', '/log-ind', '/glemt-kodeord', '/samkoersel', '/om-koermed', '/sikkerhed',
   '/vilkaar', '/privatliv', '/cookies', '/kontakt', '/stoet-koermed', '/anmeld-ulovligt-indhold', '/robots.txt', '/sitemap.xml',
+  '/gem-som-app', '/manifest.webmanifest', '/icon-192.png', '/icon-512.png',
 ]
 for (const p of publicPages) {
   try {

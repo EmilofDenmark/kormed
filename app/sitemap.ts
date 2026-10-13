@@ -14,6 +14,7 @@ const PUBLIC_PATHS = [
   '/anmeld-ulovligt-indhold',
   '/om-koermed',
   '/stoet-koermed',
+  '/gem-som-app',
 ]
 
 export default function sitemap(): MetadataRoute.Sitemap {

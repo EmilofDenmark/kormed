@@ -21,6 +21,7 @@ export async function Footer() {
               <li><Link href="/find-lift" className="hover:text-brand-dark">Find lift</Link></li>
               <li><Link href="/tilbyd-lift" className="hover:text-brand-dark">Tilbyd lift</Link></li>
               <li><Link href="/samkoersel" className="hover:text-brand-dark">Sådan fungerer {brand.name}</Link></li>
+              <li><Link href="/gem-som-app" className="hover:text-brand-dark">Gem som app</Link></li>
             </ul>
           </div>
           <div>

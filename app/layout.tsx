@@ -1,4 +1,4 @@
-import type { Metadata } from 'next'
+import type { Metadata, Viewport } from 'next'
 import { Inter } from 'next/font/google'
 import { Header } from '@/components/nav/Header'
 import { Footer } from '@/components/nav/Footer'
@@ -11,7 +11,11 @@ export const metadata: Metadata = {
   metadataBase: new URL(brand.url),
   title: { default: brand.name, template: `%s · ${brand.name}` },
   description: brand.tagline,
+  // iPhone: navn under ikonet, når siden gemmes på hjemmeskærmen.
+  appleWebApp: { capable: true, title: brand.name, statusBarStyle: 'default' },
 }
+
+export const viewport: Viewport = { themeColor: '#2F7D6D' }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
