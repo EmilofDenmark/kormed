@@ -1,0 +1,20 @@
+name: Overvågning af kørmed.dk
+
+# Kører hver nat og tjekker det live site (sider, sikkerhedsheadere,
+# pladsholdere i juridiske tekster, www-redirect og certifikat). Fejler
+# kørslen, sender GitHub dig automatisk en mail.
+on:
+  schedule:
+    - cron: '0 5 * * *'
+  workflow_dispatch:
+
+jobs:
+  tjek:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: node scripts/overvaagning.mjs

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache'
 import { createClient } from '@/lib/supabase/server'
+import { createAdminClient } from '@/lib/supabase/admin'
 import { requireAdmin } from '@/lib/session'
 import { sanitizePlainText } from '@/lib/sanitize'
 import {
@@ -40,7 +41,29 @@ export async function suspendUser(_prev: ActionResult, formData: FormData): Prom
     .eq('id', parsed.data.userId)
   if (error) return { success: false, error: 'Kunne ikke spærre brugeren.' }
 
+  // Håndhæv udelukkelsen: spær selve login (Supabase Auth ban) og fjern
+  // brugerens aktive ture fra søgningen. Fejl her må ikke skjules — status er
+  // allerede sat, så vi melder tilbage, hvis låsen ikke kunne sættes.
+  let enforcementFailed = false
+  try {
+    const authAdmin = createAdminClient()
+    const { error: banError } = await authAdmin.auth.admin.updateUserById(parsed.data.userId, { ban_duration: '876000h' })
+    if (banError) enforcementFailed = true
+    await authAdmin
+      .from('rides')
+      .update({ status: 'CANCELLED', cancelled_reason: 'Brugeren er udelukket fra KørMed', cancelled_at: new Date().toISOString() })
+      .eq('driver_id', parsed.data.userId)
+      .eq('status', 'PUBLISHED')
+  } catch (err) {
+    console.error('suspend_enforcement_failed', err)
+    enforcementFailed = true
+  }
+
   await logAdminAction(admin.id, 'suspend_user', 'profiles', parsed.data.userId, parsed.data.reason)
+  if (enforcementFailed) {
+    revalidatePath('/admin/brugere')
+    return { success: false, error: 'Brugeren er markeret som spærret, men login kunne ikke låses. Prøv igen.' }
+  }
   revalidatePath('/admin/brugere')
   return { success: true }
 }
@@ -50,6 +73,14 @@ export async function reactivateUser(userId: string): Promise<ActionResult> {
   const supabase = await createClient()
   const { error } = await supabase.from('profiles').update({ status: 'active', suspended_reason: null }).eq('id', userId)
   if (error) return { success: false, error: 'Kunne ikke genaktivere brugeren.' }
+
+  try {
+    const authAdmin = createAdminClient()
+    await authAdmin.auth.admin.updateUserById(userId, { ban_duration: 'none' })
+  } catch (err) {
+    console.error('reactivate_unban_failed', err)
+    return { success: false, error: 'Brugeren er markeret aktiv, men login kunne ikke åbnes igen. Prøv igen.' }
+  }
 
   await logAdminAction(admin.id, 'reactivate_user', 'profiles', userId)
   revalidatePath('/admin/brugere')
