@@ -5,6 +5,8 @@ import { createClient } from '@/lib/supabase/server'
 import { createAdminClient } from '@/lib/supabase/admin'
 import { requireAdmin } from '@/lib/session'
 import { sanitizePlainText } from '@/lib/sanitize'
+import { email } from '@/lib/email'
+import { brand } from '@/lib/config/brand'
 import {
   ferryRouteSchema,
   updateSettingSchema,
@@ -63,6 +65,27 @@ export async function suspendUser(_prev: ActionResult, formData: FormData): Prom
   if (enforcementFailed) {
     revalidatePath('/admin/brugere')
     return { success: false, error: 'Brugeren er markeret som spærret, men login kunne ikke låses. Prøv igen.' }
+  }
+
+  // Skriftlig begrundelse til brugeren (DSA art. 17): hvad der er sket, hvorfor, og hvordan man
+  // klager. En mislykket mail ændrer ikke udelukkelsen, men logges, så den kan ses bagefter.
+  try {
+    const { data: target } = await supabase.from('profiles').select('email, first_name').eq('id', parsed.data.userId).single()
+    if (target?.email) {
+      await email.send({
+        to: target.email,
+        subject: `Din konto på ${brand.name} er udelukket`,
+        text:
+          `Hej ${target.first_name},\n\n` +
+          `Din konto på ${brand.name} er blevet udelukket. Du kan ikke længere logge ind, oprette ture eller booke.\n\n` +
+          `Begrundelse: ${sanitizePlainText(parsed.data.reason, 500)}\n\n` +
+          `Udelukkelsen sker efter vores vilkår, som du har accepteret ved oprettelsen. ` +
+          `Mener du, at afgørelsen er forkert, kan du skrive til ${brand.supportEmail}, så vurderer vi sagen igen.\n\n` +
+          `Venlig hilsen\n${brand.name}`,
+      })
+    }
+  } catch (err) {
+    console.error('suspend_reason_email_failed', err)
   }
   revalidatePath('/admin/brugere')
   return { success: true }

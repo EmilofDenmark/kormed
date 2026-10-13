@@ -65,5 +65,19 @@ export async function submitContentNotice(_prev: ActionResult, formData: FormDat
     console.error('notice_admin_email_failed', err)
   }
 
+  // Kvittering til anmelder (DSA art. 16: bekræft modtagelsen).
+  try {
+    await email.send({
+      to: parsed.data.reporterEmail,
+      subject: `Vi har modtaget din anmeldelse på ${brand.name}`,
+      text:
+        `Tak for din anmeldelse. Vi har modtaget den og vurderer den hurtigst muligt.\n\n` +
+        `Vi sender dig besked, hvis vi har brug for flere oplysninger, eller når vi har truffet en afgørelse.\n\n` +
+        `Venlig hilsen\n${brand.name}`,
+    })
+  } catch (err) {
+    console.error('notice_receipt_email_failed', err)
+  }
+
   return { success: true }
 }

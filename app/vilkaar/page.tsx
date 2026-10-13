@@ -19,8 +19,7 @@ export default async function TermsPage() {
     <div className="mx-auto max-w-2xl px-4 py-10 sm:px-6">
       {doc?.requires_legal_review && (
         <p className="mb-6 rounded-xl bg-warning/10 p-3 text-sm text-warning">
-          Denne tekst er en administrativt genereret placeholder og kræver juridisk gennemgang. Den udgør ikke
-          juridisk rådgivning.
+          Denne tekst er endnu ikke gennemgået af en jurist og udgør ikke juridisk rådgivning.
         </p>
       )}
       {doc ? <LegalContent content={doc.content} /> : <p className="text-ink-500">Vilkårene er ikke udgivet endnu.</p>}

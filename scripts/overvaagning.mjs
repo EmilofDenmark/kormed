@@ -65,6 +65,14 @@ for (const p of ['/vilkaar', '/privatliv', '/kontakt', '/cookies', '/sikkerhed']
   if (hits.length) fail(`Pladsholder fundet på ${p}: ${hits.join(', ')}`)
 }
 
+// 5b) Vilkår og privatlivspolitik indeholder de centrale afsnit (ikke kun en tom pladsholder)
+{
+  const terms = (await text('/vilkaar')).body
+  if (!/udelukk/i.test(terms)) fail('/vilkaar nævner ikke udelukkelse')
+  const privacy = (await text('/privatliv')).body
+  if (!privacy.includes('Datatilsynet')) fail('/privatliv nævner ikke retten til at klage til Datatilsynet')
+}
+
 // 6) Kontaktside viser firmaoplysninger
 {
   const { body } = await text('/kontakt')
