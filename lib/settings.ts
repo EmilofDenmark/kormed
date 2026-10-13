@@ -64,7 +64,7 @@ const FALLBACKS: AppSettings = {
     shopName: 'Vin i Glasset',
     shopUrl: 'https://viniglasset.dk',
     promotionText:
-      'Hvis du alligevel er på udkig efter vin, kan du også støtte projektet ved at handle hos Vin i Glasset.',
+      'KørMed drives af Dosage, som også ejer Vin i Glasset. Hvis du alligevel er på udkig efter vin, kan du støtte projektet ved at handle hos Vin i Glasset.',
   },
 }
 

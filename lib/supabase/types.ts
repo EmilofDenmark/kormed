@@ -424,6 +424,7 @@ export interface Database {
       }
       is_admin: { Args: Record<string, never>; Returns: boolean }
       auto_complete_past_rides: { Args: Record<string, never>; Returns: number }
+      purge_expired_data: { Args: Record<string, never>; Returns: Record<string, number> }
     }
   }
 }

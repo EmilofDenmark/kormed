@@ -25,7 +25,7 @@ export function SupportPromoCard({
       <h3 className="mb-1 text-base font-semibold text-brand-dark">Støt KørMed</h3>
       <p className="mb-4 text-sm text-ink-700">
         KørMed er gratis at bruge. Har du lyst til at hjælpe med at holde siden kørende, kan du give et frivilligt
-        bidrag{wineEnabled ? ' – eller besøge vores venner hos Vin i Glasset.' : '.'}
+        bidrag{wineEnabled ? ' – eller besøge vores egen vinforretning, Vin i Glasset.' : '.'}
       </p>
       <div className="flex flex-wrap gap-3">
         {supportEnabled && (
